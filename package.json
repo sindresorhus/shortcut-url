@@ -1,0 +1,39 @@
+{
+  "name": "shortcut-url",
+  "version": "0.0.0",
+  "description": "Get the URL from a web shortcut file",
+  "license": "MIT",
+  "repository": "sindresorhus/shortcut-url",
+  "author": {
+    "name": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "node test.js"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "shortcut",
+    "alias",
+    "url",
+    "uri",
+    "get",
+    "parse",
+    "desktop",
+    "webloc",
+    "web",
+    "internet"
+  ],
+  "dependencies": {
+    "get-urls": "^5.0.0"
+  },
+  "devDependencies": {
+    "ava": "0.0.4"
+  }
+}
