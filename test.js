@@ -1,21 +1,14 @@
-'use strict';
-var test = require('ava');
-var fn = require('./');
+import test from 'ava';
+import m from './';
 
-test('main', function (t) {
-	t.plan(2);
-
-	fn('fixture/google', function (err, url) {
-		t.assert(!err, err);
-		t.assert(url === 'https://google.com');
-	});
+test('main', async t => {
+	t.is(await m('fixture/google'), 'https://google.com');
 });
 
-test('with extension', function (t) {
-	t.plan(2);
+test('with extension', async t => {
+	t.is(await m('fixture/google.webloc'), 'https://google.com');
+});
 
-	fn('fixture/google.webloc', function (err, url) {
-		t.assert(!err, err);
-		t.assert(url === 'https://google.com');
-	});
+test('unknown shortcut', t => {
+	t.throws(m('fixture/unknown.webloc'), 'Couldn\'t find a web shortcut with the name `unknown.webloc`');
 });

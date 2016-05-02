@@ -1,9 +1,10 @@
 'use strict';
-var path = require('path');
-var fs = require('fs');
-var getUrls = require('get-urls');
+const path = require('path');
+const fs = require('fs');
+const getUrls = require('get-urls');
+const pify = require('pify');
 
-function getExt() {
+const getExt = () => {
 	switch (process.platform) {
 		case 'darwin':
 			return '.webloc';
@@ -12,21 +13,18 @@ function getExt() {
 		default:
 			return '.desktop';
 	}
-}
+};
 
-module.exports = function (filepath, cb) {
+module.exports = filepath => {
 	filepath += path.extname(filepath) ? '' : getExt();
 
-	fs.readFile(filepath, 'utf8', function (err, data) {
-		if (err) {
+	return pify(fs.readFile)(filepath, 'utf8')
+		.then(data => getUrls(data.replace(/<!doctype.*/i, ''))[0].trim())
+		.catch(err => {
 			if (err.code === 'ENOENT') {
-				err.message = 'Couldn\'t find a web shortcut with the name `' + path.basename(filepath + '`');
+				err.message = `Couldn't find a web shortcut with the name \`${path.basename(`${filepath}\``)}`;
 			}
 
-			cb(err);
-			return;
-		}
-
-		cb(null, getUrls(data.replace(/<!doctype.*/i, ''))[0].trim());
-	});
+			throw err;
+		});
 };
