@@ -13,9 +13,9 @@ $ npm install --save shortcut-url
 ## Usage
 
 ```js
-var shortcutUrl = require('shortcut-url');
+const shortcutUrl = require('shortcut-url');
 
-shortcutUrl('google', function (err, url) {
+shortcutUrl('google').then(url => {
 	console.log(url);
 	//=> 'https://google.com'
 });
@@ -30,13 +30,15 @@ In the above example it will look for the following file:
 
 ## API
 
-### shortcutUrl(filepath, callback)
+### shortcutUrl(filepath)
+
+Returns a promise for the URL.
 
 #### filepath
 
 Type: `string`
 
-Filepath to the web shortcut.  
+Filepath to the web shortcut.
 Leave out the extension for cross-platform compatibility.
 
 
@@ -48,4 +50,4 @@ Leave out the extension for cross-platform compatibility.
 
 ## License
 
-MIT © [Sindre Sorhus](http://sindresorhus.com)
+MIT © [Sindre Sorhus](https://sindresorhus.com)
