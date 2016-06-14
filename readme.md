@@ -23,7 +23,7 @@ shortcutUrl('google').then(url => {
 
 In the above example it will look for the following file:
 
-- OS X: `google.webloc`
+- macOS: `google.webloc`
 - Linux: `google.desktop`
 - Windows: `google.url`
 
