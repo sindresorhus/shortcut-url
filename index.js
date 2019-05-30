@@ -15,16 +15,39 @@ const getExt = () => {
 	}
 };
 
+const xmlTagRegexp = /<.*?>/g;
+const xmlEscapeRegexp = /&(#\d+|lt|gt|quot|apos|amp);/g;
+const xmlUnescape = str => str.replace(xmlEscapeRegexp, (_, escape) => {
+	switch (escape) {
+		case 'lt': return '<';
+		case 'gt': return '>';
+		case 'quot': return '"';
+		case 'apos': return '\'';
+		case 'amp': return '&';
+		default: return String.fromCharCode(parseInt(escape.substr(1), 10));
+	}
+});
+
 module.exports = filepath => {
 	filepath += path.extname(filepath) ? '' : getExt();
 
 	return pify(fs.readFile)(filepath, 'utf8')
-		.then(data => getUrls(data.replace(/<!doctype.*/i, ''))[0].trim())
-		.catch(err => {
-			if (err.code === 'ENOENT') {
-				err.message = `Couldn't find a web shortcut with the name \`${path.basename(`${filepath}\``)}`;
+		.then(text => {
+			let data = text.trim();
+
+			const isXml = data[0] === '<';
+			if (isXml) {
+				data = data.replace(xmlTagRegexp, ' ');
+				data = xmlUnescape(data);
 			}
 
-			throw err;
+			return getUrls(data)[0].trim();
+		})
+		.catch(error => {
+			if (error.code === 'ENOENT') {
+				error.message = `Couldn't find a web shortcut with the name \`${path.basename(`${filepath}\``)}`;
+			}
+
+			throw error;
 		});
 };
