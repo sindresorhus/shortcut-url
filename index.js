@@ -1,10 +1,12 @@
 'use strict';
+const {promisify} = require('util');
 const path = require('path');
 const fs = require('fs');
 const getUrls = require('get-urls');
-const pify = require('pify');
 
-const getExt = () => {
+const readFile = promisify(fs.readFile);
+
+const getExtension = () => {
 	switch (process.platform) {
 		case 'darwin':
 			return '.webloc';
@@ -17,37 +19,45 @@ const getExt = () => {
 
 const xmlTagRegexp = /<.*?>/g;
 const xmlEscapeRegexp = /&(#\d+|lt|gt|quot|apos|amp);/g;
-const xmlUnescape = str => str.replace(xmlEscapeRegexp, (_, escape) => {
+
+const xmlUnescape = string => string.replace(xmlEscapeRegexp, (_, escape) => {
 	switch (escape) {
-		case 'lt': return '<';
-		case 'gt': return '>';
-		case 'quot': return '"';
-		case 'apos': return '\'';
-		case 'amp': return '&';
-		default: return String.fromCharCode(parseInt(escape.substr(1), 10));
+		case 'lt':
+			return '<';
+		case 'gt':
+			return '>';
+		case 'quot':
+			return '"';
+		case 'apos':
+			return '\'';
+		case 'amp':
+			return '&';
+		default:
+			return String.fromCharCode(parseInt(escape.slice(1), 10));
 	}
 });
 
-module.exports = filepath => {
-	filepath += path.extname(filepath) ? '' : getExt();
+module.exports = async filePath => {
+	filePath += path.extname(filePath) ? '' : getExtension();
 
-	return pify(fs.readFile)(filepath, 'utf8')
-		.then(text => {
-			let data = text.trim();
+	let data;
+	try {
+		data = await readFile(filePath, 'utf8');
+	} catch (error) {
+		if (error.code === 'ENOENT') {
+			error.message = `Couldn't find a web shortcut with the name \`${path.basename(`${filePath}\``)}`;
+		}
 
-			const isXml = data[0] === '<';
-			if (isXml) {
-				data = data.replace(xmlTagRegexp, ' ');
-				data = xmlUnescape(data);
-			}
+		throw error;
+	}
 
-			return getUrls(data)[0].trim();
-		})
-		.catch(error => {
-			if (error.code === 'ENOENT') {
-				error.message = `Couldn't find a web shortcut with the name \`${path.basename(`${filepath}\``)}`;
-			}
+	data = data.trim();
 
-			throw error;
-		});
+	const isXml = data[0] === '<';
+	if (isXml) {
+		data = data.replace(xmlTagRegexp, ' ');
+		data = xmlUnescape(data);
+	}
+
+	return [...getUrls(data)][0].trim();
 };

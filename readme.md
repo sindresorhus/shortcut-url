@@ -6,7 +6,7 @@
 ## Install
 
 ```
-$ npm install --save shortcut-url
+$ npm install shortcut-url
 ```
 
 
@@ -15,10 +15,10 @@ $ npm install --save shortcut-url
 ```js
 const shortcutUrl = require('shortcut-url');
 
-shortcutUrl('google').then(url => {
-	console.log(url);
+(async () => {
+	console.log(await shortcutUrl('google'));
 	//=> 'https://google.com'
-});
+})();
 ```
 
 In the above example it will look for the following file:
@@ -30,15 +30,16 @@ In the above example it will look for the following file:
 
 ## API
 
-### shortcutUrl(filepath)
+### shortcutUrl(filePath)
 
-Returns a promise for the URL.
+Returns `Promise<string>` with the URL.
 
-#### filepath
+#### filePath
 
 Type: `string`
 
-Filepath to the web shortcut.
+File path to the web shortcut.
+
 Leave out the extension for cross-platform compatibility.
 
 
@@ -46,8 +47,3 @@ Leave out the extension for cross-platform compatibility.
 
 - [shortcut-url-cli](https://github.com/sindresorhus/shortcut-url-cli) - CLI for this module
 - [open-shortcut](https://github.com/sindresorhus/open-shortcut) - Open the URL from a web shortcut file
-
-
-## License
-
-MIT © [Sindre Sorhus](https://sindresorhus.com)

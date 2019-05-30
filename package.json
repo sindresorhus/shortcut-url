@@ -1,44 +1,39 @@
 {
-  "name": "shortcut-url",
-  "version": "2.0.0",
-  "description": "Get the URL from a web shortcut file",
-  "license": "MIT",
-  "repository": "sindresorhus/shortcut-url",
-  "author": {
-    "name": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com"
-  },
-  "engines": {
-    "node": ">=4"
-  },
-  "scripts": {
-    "test": "xo && ava"
-  },
-  "files": [
-    "index.js"
-  ],
-  "keywords": [
-    "shortcut",
-    "alias",
-    "url",
-    "uri",
-    "get",
-    "parse",
-    "desktop",
-    "webloc",
-    "web",
-    "internet"
-  ],
-  "dependencies": {
-    "get-urls": "^5.0.0",
-    "pify": "^2.3.0"
-  },
-  "devDependencies": {
-    "ava": "*",
-    "xo": "*"
-  },
-  "xo": {
-    "esnext": true
-  }
+	"name": "shortcut-url",
+	"version": "2.0.0",
+	"description": "Get the URL from a web shortcut file",
+	"license": "MIT",
+	"repository": "sindresorhus/shortcut-url",
+	"author": {
+		"name": "Sindre Sorhus",
+		"email": "sindresorhus@gmail.com",
+		"url": "sindresorhus.com"
+	},
+	"engines": {
+		"node": ">=8"
+	},
+	"scripts": {
+		"test": "xo && ava"
+	},
+	"files": [
+		"index.js"
+	],
+	"keywords": [
+		"shortcut",
+		"alias",
+		"url",
+		"get",
+		"parse",
+		"desktop",
+		"webloc",
+		"web",
+		"internet"
+	],
+	"dependencies": {
+		"get-urls": "^9.1.0"
+	},
+	"devDependencies": {
+		"ava": "^1.4.1",
+		"xo": "^0.24.0"
+	}
 }
