@@ -1,5 +1,5 @@
 import test from 'ava';
-import shortcutUrl from '.';
+import shortcutUrl from './index.js';
 
 test('main', async t => {
 	t.is(await shortcutUrl('fixture/google'), 'https://google.com');
@@ -18,5 +18,7 @@ test('webloc complex query, #2', async t => {
 });
 
 test('unknown shortcut', async t => {
-	await t.throwsAsync(shortcutUrl('fixture/unknown.webloc'), 'Couldn\'t find a web shortcut with the name `unknown.webloc`');
+	await t.throwsAsync(shortcutUrl('fixture/unknown.webloc'), {
+		message: 'Couldn\'t find a web shortcut with the name `unknown.webloc`',
+	});
 });

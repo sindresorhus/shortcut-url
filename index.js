@@ -1,10 +1,7 @@
-'use strict';
-const {promisify} = require('util');
-const path = require('path');
-const fs = require('fs');
-const getUrls = require('get-urls');
-
-const readFile = promisify(fs.readFile);
+import process from 'node:process';
+import path from 'node:path';
+import {promises as fs} from 'node:fs';
+import getUrls from 'get-urls';
 
 const getExtension = () => {
 	switch (process.platform) {
@@ -33,16 +30,16 @@ const xmlUnescape = string => string.replace(xmlEscapeRegexp, (_, escape) => {
 		case 'amp':
 			return '&';
 		default:
-			return String.fromCharCode(parseInt(escape.slice(1), 10));
+			return String.fromCharCode(Number.parseInt(escape.slice(1), 10));
 	}
 });
 
-module.exports = async filePath => {
+export default async function shortcutUrl(filePath) {
 	filePath += path.extname(filePath) ? '' : getExtension();
 
 	let data;
 	try {
-		data = await readFile(filePath, 'utf8');
+		data = await fs.readFile(filePath, 'utf8');
 	} catch (error) {
 		if (error.code === 'ENOENT') {
 			error.message = `Couldn't find a web shortcut with the name \`${path.basename(`${filePath}\``)}`;
@@ -60,4 +57,4 @@ module.exports = async filePath => {
 	}
 
 	return [...getUrls(data)][0].trim();
-};
+}

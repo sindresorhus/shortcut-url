@@ -2,23 +2,19 @@
 
 > Get the URL from a [web shortcut](https://en.wikipedia.org/wiki/File_shortcut) file
 
-
 ## Install
 
 ```
 $ npm install shortcut-url
 ```
 
-
 ## Usage
 
 ```js
-const shortcutUrl = require('shortcut-url');
+import shortcutUrl from 'shortcut-url';
 
-(async () => {
-	console.log(await shortcutUrl('google'));
-	//=> 'https://google.com'
-})();
+console.log(await shortcutUrl('google'));
+//=> 'https://google.com'
 ```
 
 In the above example it will look for the following file:
@@ -26,7 +22,6 @@ In the above example it will look for the following file:
 - macOS: `google.webloc`
 - Linux: `google.desktop`
 - Windows: `google.url`
-
 
 ## API
 
@@ -38,10 +33,9 @@ Returns `Promise<string>` with the URL.
 
 Type: `string`
 
-File path to the web shortcut.
+The file path to the web shortcut.
 
 Leave out the extension for cross-platform compatibility.
-
 
 ## Related
 
